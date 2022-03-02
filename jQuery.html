@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery lesson</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <style>
+        .texts {
+            font-size: 25px;
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+
+        }
+
+        .forms {
+            width: 200px;
+            height: 22px;
+            font-size: 18px;
+            border-color: lightslategray;
+            display: flex;
+            margin: auto;
+        }
+
+        .button {
+            width: 140px;
+            height: 30px;
+            display: flex;
+            margin: auto;
+            padding-left: 47px;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+    <form>
+        <label class="texts">Surname</label><input id="lName" type="text" class="forms">
+        <label class="texts">Name</label><input id="fName" type="text" class="forms">
+        <label class="texts">Age</label><input id="age" type="number" class="forms">
+        <label class="texts">Home Adress</label><input id="address" type="text" class="forms">
+        <br><input id="getButton" type="button" value="GET" class="button">
+        <br><input id="sendButton" type="button" value="POST" class="button">
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('#getButton').bind('click', function () {
+                let userData = {
+                    lName: $('#lName').val(),
+                    fName: $('#fName').val(),
+                    age: $('#age').val(),
+                    address: $('#address').val()
+                };
+                if (userData.age > 100 || userData.age < 1) {
+                    $('#age').attr('placeholder', 'Wrong age data')
+                    $('#age').css('borderColor', 'red');
+                    $('#age').val(null);
+                    $('#age').focus();
+                }
+                if (userData.age <= 100 && userData.age >= 1) {
+                    $('#age').removeAttr('placeholder');
+                    $('#age').css('borderColor', 'lightslategray');
+                }
+                $.ajax({
+                    type: 'GET',
+                    data: JSON.stringify(userData),
+                    contentType: 'application/json',
+                    url: 'http://localhost:3000/userGet?lName=' + userData.lName +
+                        '&fName=' + userData.fName + '&age=' + userData.age + '&address=' + userData.address,
+                    success: function () {
+                        console.log('success (GET)');
+                    }
+                })
+            })
+        })
+
+        $(document).ready(function () {
+            $('#sendButton').bind('click', function () {
+                let userData = {
+                    lName: $('#lName').val(),
+                    fName: $('#fName').val(),
+                    age: $('#age').val(),
+                    address: $('#address').val()
+                };
+                if (userData.age > 100 || userData.age < 1) {
+                    $('#age').attr('placeholder', 'Wrong age data')
+                    $('#age').css('borderColor', 'red');
+                    $('#age').val(null);
+                    $('#age').focus();
+                }
+                if (userData.age <= 100 && userData.age >= 1) {
+                    $('#age').removeAttr('placeholder');
+                    $('#age').css('borderColor', 'lightslategray');
+                }
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(userData),
+                    contentType: 'application/json',
+                    url: 'http://localhost:3000/userPost',
+                    success: function () {
+                        console.log('success (POST)');
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
